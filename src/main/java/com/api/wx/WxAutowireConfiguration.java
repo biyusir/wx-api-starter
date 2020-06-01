@@ -1,9 +1,10 @@
 package com.api.wx;
 
 import com.github.wx.api.WxRest;
-import com.github.wx.api.WxRestImpl;
+import com.github.wx.api.WxRestAdapterImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +16,10 @@ public class WxAutowireConfiguration {
     @Autowired
     WxProperties wxProperties;
 
+    @ConditionalOnMissingBean(WxRest.class)
     @Bean
     public WxRest wxApi() {
-        return new WxRestImpl(wxProperties.getId(), wxProperties.getSecurity());
+        return new WxRestAdapterImpl(wxProperties.getId(), wxProperties.getSecurity());
     }
 
 }
